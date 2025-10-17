@@ -107,6 +107,7 @@ def generate_embeddings_batch(texts: list[str]) -> list[list[float]]:
             result = genai.embed_content(
                 model=model, content=text, task_type="retrieval_document"
             )
+            # api response is a disctionary with "embedding" key
             embedding = result["embedding"]
 
             # Verify embedding dimensions
@@ -190,6 +191,7 @@ def process_url(url_id: int):
 
         # 9. Update status to completed
         metadata.status = IngestionStatus.completed
+        metadata.chunks_created = len(chunks)
         metadata.updated_at = datetime.utcnow()
         metadata.error_message = None
         db.commit()
