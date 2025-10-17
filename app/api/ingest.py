@@ -28,7 +28,7 @@ def ingest_url(request: IngestRequest):
             if existing.status == IngestionStatus.failed:
                 raise HTTPException(
                     status_code=400,
-                    detail=f"URL already processed and was Failed. Please reprocess the URL {existing.url}.",
+                    detail=f"URL already processed and was Failed. Please recheck the URL {existing.url} and re-submit.",
                 )
 
             if existing.status in [IngestionStatus.pending, IngestionStatus.processing]:
@@ -49,6 +49,7 @@ def ingest_url(request: IngestRequest):
             db.commit()
             db.refresh(metadata)
 
+        # Background job enqueued to process URL
         try:
             job = q.enqueue("app.worker.worker.process_url", metadata.id)
         except Exception as e:
@@ -59,7 +60,7 @@ def ingest_url(request: IngestRequest):
             raise HTTPException(status_code=500, detail="Failed to queue job")
 
         return {
-            "message": "URL submitted successfully",
+            "message": "URL submitted successfully and enqueued for processing.",
             "url_id": metadata.id,
             "job_id": job.id,
             "status": metadata.status,
