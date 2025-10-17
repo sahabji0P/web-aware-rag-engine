@@ -211,29 +211,3 @@ def process_url(url_id: int):
 
     finally:
         db.close()
-
-
-def reprocess_failed_url(url_id: int):
-    """Reprocess a failed URL"""
-    db = SessionLocal()
-    try:
-        metadata = db.query(URLMetadata).filter(URLMetadata.id == url_id).first()
-        if not metadata:
-            raise ValueError(f"URL with id {url_id} not found")
-
-        if metadata.status != IngestionStatus.failed:
-            raise ValueError(
-                f"URL is not in failed state, current status: {metadata.status}"
-            )
-
-        logger.info(f"[{url_id}] Reprocessing failed URL: {metadata.url}")
-
-        # Reset to pending and reprocess
-        metadata.status = IngestionStatus.pending
-        metadata.error_message = None
-        metadata.updated_at = datetime.utcnow()
-        db.commit()
-
-        process_url(url_id)
-    finally:
-        db.close()

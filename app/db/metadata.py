@@ -53,9 +53,11 @@ class URLMetadata(Base):
     id = Column(Integer, primary_key=True, index=True)
     url = Column(String, unique=True, nullable=False)
     status = Column(String, nullable=False, default=IngestionStatus.pending)
+    chunks_created = Column(Integer, nullable=True, default=0)  # NEW
+    error_message = Column(Text, nullable=True)
+
     created_at = Column(DateTime, default=func.now())
     updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
-    error_message = Column(Text, nullable=True)
 
     __table_args__ = (
         CheckConstraint(

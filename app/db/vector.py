@@ -1,8 +1,3 @@
-"""
-Shared ChromaDB initialization
-Used by both worker and query modules
-"""
-
 import chromadb
 import logging
 
@@ -21,6 +16,10 @@ logger.info(f"ChromaDB collection initialized. Current size: {collection.count()
 
 def get_collection():
     """Get the ChromaDB collection instance"""
+    logger.info(
+        f"🧳ChromaDB collection initialized. Current size: {collection.count()}"
+    )
+
     return collection
 
 

@@ -57,7 +57,9 @@ def ingest_url(request: IngestRequest):
             metadata.status = IngestionStatus.failed
             metadata.error_message = f"Failed to queue job: {str(e)}"
             db.commit()
-            raise HTTPException(status_code=500, detail="Failed to queue job")
+            raise HTTPException(
+                status_code=500, detail=f"Failed to queue job: {str(e)}"
+            )
 
         return {
             "message": "URL submitted successfully and enqueued for processing.",
