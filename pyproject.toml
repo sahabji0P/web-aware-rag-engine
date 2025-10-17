@@ -1,0 +1,27 @@
+[tool.poetry]
+name = "webaware-rag-engine"
+version = "0.1.0"
+description = ""
+authors = ["Shashwat Jain <kcapshashwat@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+fastapi = "0.109.0"
+uvicorn = "0.27.0"
+pydantic = "2.5.3"
+sqlalchemy = "2.0.25"
+redis = "5.0.1"
+rq = "1.16.1"
+requests = "2.31.0"
+beautifulsoup4 = "4.12.3"
+lxml = "5.1.0"
+google-generativeai = "0.3.2"
+chromadb = "0.4.22"
+python-dotenv = "1.0.0"
+numpy = ">=1.22.5,<2.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
