@@ -18,7 +18,6 @@
   - [Debugging Endpoints](#debugging-endpoints)
 - [Usage](#usage)
 - [Project Structure](#project-structure)
-- [License](#license)
 
 ---
 
@@ -451,6 +450,13 @@ Edit `.env` with your configuration (see Configuration section below).
 ```bash
 redis-server
 ```
+**OR**
+*to check if the redis server is already running:*
+
+```bash
+redis-cli ping
+```
+**The response after running this command must be `PONG`**
 
 By default runs on `localhost:6379`.
 
