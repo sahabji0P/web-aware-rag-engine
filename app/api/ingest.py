@@ -1,3 +1,4 @@
+from urllib.parse import urlparse
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, HttpUrl
 from app.db.metadata import SessionLocal, URLMetadata, IngestionStatus
@@ -16,11 +17,22 @@ class IngestRequest(BaseModel):
     url: HttpUrl
 
 
+def is_valid_url(url: str) -> bool:
+    try:
+        result = urlparse(url)
+        return all([result.scheme in ["http", "https"], result.netloc])
+    except Exception:
+        return False
+
+
 @router.post("/url", status_code=202)
 def ingest_url(request: IngestRequest):
     db = SessionLocal()
 
     try:
+        if not is_valid_url(request.url):
+            raise ValueError(f"Invalid URL format: {request.url}")
+
         existing = (
             db.query(URLMetadata).filter(URLMetadata.url == str(request.url)).first()
         )
